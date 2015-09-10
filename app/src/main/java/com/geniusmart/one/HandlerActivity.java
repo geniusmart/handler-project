@@ -1,4 +1,4 @@
-package com.geniusmart.handler;
+package com.geniusmart.one;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,9 +7,12 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.geniusmart.R;
 
-public class MainActivity extends Activity {
 
+public class HandlerActivity extends Activity {
+
+    public static final String TAG = "geniusmart";
     private TextView mCTOTextView;
 
     //CEO老张——主线程或UI线程
@@ -20,7 +23,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void handleMessage(Message msg) {
-            Log.i("geniusmart", "是否为主线程:" + (mCEO == Thread.currentThread()));
+            Log.i(TAG, "是否为主线程:" + (mCEO == Thread.currentThread()));
 
             String line = "\n";
             StringBuffer text = new StringBuffer(mCTOTextView.getText());
@@ -79,8 +82,8 @@ public class MainActivity extends Activity {
         public void run() {
             Message message = Message.obtain();
             message.what = Employee.PM;
-            message.obj = "开发进度严重滞后于产品计划，请排查";
-            //产品汪考虑了5秒钟，想CTO反馈了目前的产品进度问题
+            message.obj = "开发进度严重滞后于产品计划，请协调。";
+            //产品汪考虑了5秒钟，像CTO反馈了目前的产品进度问题
             mCTOHandler.sendMessageDelayed(message,5000);
         }
     }

@@ -1,4 +1,4 @@
-package com.geniusmart.handler;
+package com.geniusmart.one;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
