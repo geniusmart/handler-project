@@ -2,4 +2,8 @@
     <string name="app_name">HandlerProject</string>
 
     <string name="cto_job">日理万机的CTO</string>
+    <string name="title_activity_async_task">AsyncTaskActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
