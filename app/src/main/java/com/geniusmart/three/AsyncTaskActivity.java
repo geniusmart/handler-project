@@ -5,12 +5,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.geniusmart.R;
 
 public class AsyncTaskActivity extends Activity implements View.OnClickListener{
 
     public static final String TAG = "AsyncTaskActivity";
+    private TextView showTextView;
     MyAsyncTask myAsyncTask;
 
     @Override
@@ -21,7 +23,7 @@ public class AsyncTaskActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.btn_cancle2).setOnClickListener(this);
         findViewById(R.id.btn_cancle1).setOnClickListener(this);
         findViewById(R.id.btn_execute).setOnClickListener(this);
-
+        showTextView = (TextView) findViewById(R.id.tv_show);
         //myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"");
     }
 
@@ -29,8 +31,13 @@ public class AsyncTaskActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_execute:
-                myAsyncTask = new MyAsyncTask();
-                myAsyncTask.execute();
+                new Thread(){
+                    public void run(){
+                        myAsyncTask = new MyAsyncTask();
+                        myAsyncTask.execute();
+                    }
+                }.start();
+
                 break;
             case R.id.btn_cancle1:
                 //参数为ture时，允许任务执行一半终止
@@ -48,21 +55,25 @@ public class AsyncTaskActivity extends Activity implements View.OnClickListener{
         @Override
         protected void onCancelled() {//4个on开头，和1个do开头
             Log.e(TAG,"onCancelled");
+            showTextView.setText("onCancelled");
         }
 
         @Override
         protected void onPostExecute(String s) {
             Log.e(TAG, "onPostExecute");
+            showTextView.setText("onPostExecute");
         }
 
         @Override
         protected void onPreExecute() {
             Log.e(TAG, "onPreExecute");
+            //showTextView.setText("onPreExecute");
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             Log.e(TAG, "onProgressUpdate" + values[0]);
+            showTextView.setText("onProgressUpdate" + values[0]);
         }
 
         @Override
