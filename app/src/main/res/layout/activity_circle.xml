@@ -4,9 +4,10 @@
     android:layout_height="match_parent">
 
     <com.geniusmart.view.CircleView
+        android:id="@+id/circle_view"
         android:layout_width="wrap_content"
-        android:layout_height="300dip"
-        android:layout_margin="20dp"
+        android:layout_height="wrap_content"
+        android:padding="50dp"
         android:background="@android:color/white"/>
 
 </LinearLayout>
