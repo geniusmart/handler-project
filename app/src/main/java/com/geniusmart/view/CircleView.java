@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.geniusmart.R;
@@ -16,6 +17,9 @@ public class CircleView extends View{
     private int mDefaultColor = Color.RED;
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final String TAG = "CircleView";
+
+    private int mLastX;
+    private int mLastY;
 
     public CircleView(Context context) {
         super(context);
@@ -41,6 +45,7 @@ public class CircleView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.e(TAG,"-------------onDraw--------------");
         super.onDraw(canvas);
         int width = getWidth();
         int height = getHeight();
@@ -52,16 +57,17 @@ public class CircleView extends View{
         width = width - paddingLeft - paddingRight;
         height = height - paddingBottom - paddingTop;
         int radius = Math.min(width,height)/2;
-        canvas.drawCircle(paddingLeft + width / 2, paddingTop + height / 2, radius, mPaint);
+        canvas.drawCircle(paddingLeft + width / 2, paddingTop+ height / 2, radius, mPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Log.e(TAG,"-------------onMeasure--------------");
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -76,5 +82,30 @@ public class CircleView extends View{
         }else if(heightMeasureSpec == MeasureSpec.AT_MOST){
             setMeasuredDimension(widthSpecSize,200);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.e(TAG,"lastX-->"+mLastX);
+        int x = (int) event.getRawX();
+        int y = (int) event.getRawY();
+
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int deltaX = x - mLastX;
+                int deltaY = y - mLastY;
+                Log.e(TAG,"deltaX-->"+deltaX);
+                this.setTranslationX(getTranslationX()+deltaX);
+                this.setTranslationY(getTranslationY()+deltaY);
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+
+        mLastX = x;
+        mLastY = y;
+        return true;
     }
 }

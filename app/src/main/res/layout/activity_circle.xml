@@ -23,10 +23,15 @@
             android:layout_height="wrap_content"
             android:text="translation"/>
         <Button
-            android:id="@+id/scroll"
+            android:id="@+id/scroll_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="scroll"/>
+            android:text="scrollTo"/>
+        <Button
+            android:id="@+id/scroll_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="scrollBy"/>
         <Button
             android:id="@+id/print"
             android:layout_width="wrap_content"
