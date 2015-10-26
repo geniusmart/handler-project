@@ -27,7 +27,7 @@ public class CircleView extends View{
     }
 
     public CircleView(Context context, AttributeSet attrs) {
-        this(context, attrs,R.attr.circleViewStyle);
+        this(context, attrs, R.attr.circleViewStyle);
         init();
     }
 
@@ -84,7 +84,7 @@ public class CircleView extends View{
         }
     }
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.e(TAG,"lastX-->"+mLastX);
         int x = (int) event.getRawX();
@@ -107,5 +107,18 @@ public class CircleView extends View{
         mLastX = x;
         mLastY = y;
         return true;
+    }*/
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                Log.e(TAG,"onTouch_down");
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.e(TAG,"onTouch_up");
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 }
