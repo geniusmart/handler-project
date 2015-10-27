@@ -16,12 +16,16 @@
             android:name=".three.AsyncTaskActivity"
             android:label="@string/title_activity_async_task" />
         <activity
-            android:name=".event.EventActivity"
+            android:name=".event.ignorant.EventActivity"
+            android:label="@string/title_activity_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".event.interested.EventActivity2"
             android:label="@string/title_activity_event"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

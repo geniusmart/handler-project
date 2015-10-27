@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.geniusmart.event.ignorant.ShirtLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.geniusmart.event.interested.ShirtLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.geniusmart.event.ignorant.ShirtView
+    <com.geniusmart.event.interested.ShirtView2
         android:layout_width="200dip"
         android:layout_height="200dip"
         android:background="@android:color/holo_red_light" />
 
-</com.geniusmart.event.ignorant.ShirtLayout>
+</com.geniusmart.event.interested.ShirtLayout2>
