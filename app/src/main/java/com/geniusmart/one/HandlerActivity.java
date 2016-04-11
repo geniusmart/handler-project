@@ -44,7 +44,7 @@ public class HandlerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_handler);
         mCTOTextView = (TextView) findViewById(R.id.cto_tv);
 
         new CoderThread().start();

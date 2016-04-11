@@ -1,15 +1,35 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="20dp"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/cto_tv"
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="false"
-        android:textSize="30sp"
-        android:text="@string/cto_job" />
+        android:textAllCaps="false"
+        android:onClick="startHandler"
+        android:text="@string/handler_looper"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:onClick="startHandlerThread"
+        android:text="@string/handler_thread"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:onClick="startThreadCommunication"
+        android:text="@string/ui_handler_thread"/>
 
-</RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:onClick="startAsyncTask"
+        android:text="@string/asynctask"/>
+</LinearLayout>

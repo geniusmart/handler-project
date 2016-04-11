@@ -7,4 +7,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="handler_looper">Handler和Looper</string>
+    <string name="handler_thread">HandlerThread</string>
+    <string name="ui_handler_thread">UI线程和HandlerThread通讯</string>
+    <string name="asynctask">AsyncTask</string>
 </resources>

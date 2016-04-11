@@ -43,7 +43,7 @@ public class HandlerThreadActivity2 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_handler);
 
         mTuanZhangThread = new HandlerThread("强项目1团长");
         mTuanZhangThread.start();//团长启动了项目
