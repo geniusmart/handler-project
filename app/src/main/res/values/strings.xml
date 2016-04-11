@@ -12,4 +12,5 @@
     <string name="handler_thread">HandlerThread</string>
     <string name="ui_handler_thread">UI线程和HandlerThread通讯</string>
     <string name="asynctask">AsyncTask</string>
+    <string name="futuretask">FutureTask</string>
 </resources>

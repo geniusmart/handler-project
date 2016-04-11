@@ -32,4 +32,11 @@
         android:textAllCaps="false"
         android:onClick="startAsyncTask"
         android:text="@string/asynctask"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/futuretask"
+        android:onClick="startFuture"
+        />
 </LinearLayout>
