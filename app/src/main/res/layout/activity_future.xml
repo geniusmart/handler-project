@@ -13,10 +13,33 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="execute"
+        android:text="@string/future_execute"
         android:id="@+id/button"
         android:onClick="execute"
+        android:textAllCaps="false"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/future_cancle"
+        android:onClick="cancle"
+        android:id="@+id/button2"
+        android:textAllCaps="false"
+        android:layout_below="@+id/button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/future_simple_asynctask"
+        android:id="@+id/button3"
+        android:textAllCaps="false"
+        android:onClick="executeSimpleAsyncTask"
+        android:layout_below="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 </RelativeLayout>

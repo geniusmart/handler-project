@@ -6,7 +6,7 @@ public class SuperAsyncTaskTest {
 
     @Test
     public void execute(){
-        SuperAsyncTask superAsyncTask = new SuperAsyncTask();
+        SimpleAsyncTask superAsyncTask = new SimpleAsyncTask();
         superAsyncTask.execute();
     }
 }

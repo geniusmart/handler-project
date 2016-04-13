@@ -13,4 +13,7 @@
     <string name="ui_handler_thread">UI线程和HandlerThread通讯</string>
     <string name="asynctask">AsyncTask</string>
     <string name="futuretask">FutureTask</string>
+    <string name="future_execute">execute</string>
+    <string name="future_cancle">cancle</string>
+    <string name="future_simple_asynctask">SimpleAsyncTask</string>
 </resources>
