@@ -9,7 +9,7 @@ import com.geniusmart.R;
 
 public class FutureActivity extends AppCompatActivity {
 
-    public static final String TAG = "FutureActivity";
+    private static final String TAG = "FutureActivity";
     private NiceFuture mNiceFuture = new NiceFuture();
 
     @Override
@@ -30,6 +30,10 @@ public class FutureActivity extends AppCompatActivity {
         mSimpleAsyncTask.execute();
     }
 
+    public void cancelSimpleAsyncTask(View view) {
+        mSimpleAsyncTask.cancel(true);
+    }
+
     SimpleAsyncTask mSimpleAsyncTask = new SimpleAsyncTask() {
 
         @Override
@@ -41,34 +45,26 @@ public class FutureActivity extends AppCompatActivity {
         @Override
         protected String doInBackground() {
 
-            for (int i = 0; i < 3; i++) {
-                try {
-                    Thread.sleep(2000);
-                    publishProgress("progress" + i);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            for (int i = 0; i < 30000; i++) {
+                publishProgress("progress" + i);
             }
             Log.i(TAG, "doInBackground");
-            return null;
+            return "finish";
         }
 
         @Override
         protected void onCancelled() {
             Log.i(TAG, "onCancelled");
-            super.onCancelled();
         }
 
         @Override
         protected void onProgressUpdate(String value) {
             Log.i(TAG, "onProgressUpdate" + value);
-            super.onProgressUpdate(value);
         }
 
         @Override
         protected void onPostExecute(String result) {
             Log.i(TAG, "onPostExecute" + result);
-            super.onPostExecute(result);
         }
     };
 }

@@ -15,5 +15,6 @@
     <string name="futuretask">FutureTask</string>
     <string name="future_execute">execute</string>
     <string name="future_cancle">cancle</string>
-    <string name="future_simple_asynctask">SimpleAsyncTask</string>
+    <string name="future_simple_asynctask_execute">SimpleAsyncTask-execute</string>
+    <string name="future_simple_asynctask_cancel">SimpleAsyncTask-cancel</string>
 </resources>

@@ -3,7 +3,6 @@ package com.geniusmart.future;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
@@ -13,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class SimpleAsyncTask {
 
-    public static final String TAG = "SimpleAsyncTask";
-    private static final Executor EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final String TAG = "SimpleAsyncTask";
+    private static final Executor EXECUTOR = Executors.newCachedThreadPool();
 
     private Callable<String> mCallable;
     private FutureTask<String> mFuture;
@@ -47,7 +46,6 @@ public abstract class SimpleAsyncTask {
             @Override
             public void handleMessage(Message msg) {
                 String result = (String) msg.obj;
-                Log.i(TAG, "handler " + result);
                 switch (msg.what) {
                     case MESSAGE_POST_PROGRESS:
                         //TODO 注：源码中区分了AsyncTask对象
@@ -67,7 +65,7 @@ public abstract class SimpleAsyncTask {
     }
 
     protected final void publishProgress(String value) {
-        if (isCancelled()) {
+        if (!isCancelled()) {
             sHandler.obtainMessage(MESSAGE_POST_PROGRESS, value).sendToTarget();
         }
     }
@@ -85,7 +83,7 @@ public abstract class SimpleAsyncTask {
      *
      * @param mayInterruptIfRunning TODO:参数作用何在？
      */
-    public final boolean cancle(boolean mayInterruptIfRunning) {
+    public final boolean cancel(boolean mayInterruptIfRunning) {
         mCancelled.set(true);
         return mFuture.cancel(mayInterruptIfRunning);
     }
