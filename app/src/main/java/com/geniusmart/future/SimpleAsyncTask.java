@@ -33,7 +33,6 @@ public abstract class SimpleAsyncTask {
             public String call() throws Exception {
                 //有可能正常执行，也有可能执行一半被cancel
                 String result = doInBackground();
-                //TODO:这里的返回值处用到
                 return postResult(result);
             }
         };

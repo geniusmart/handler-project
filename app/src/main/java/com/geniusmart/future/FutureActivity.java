@@ -11,6 +11,7 @@ public class FutureActivity extends AppCompatActivity {
 
     private static final String TAG = "FutureActivity";
     private NiceFuture mNiceFuture = new NiceFuture();
+    private SimpleAsyncTask mSimpleAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +28,15 @@ public class FutureActivity extends AppCompatActivity {
     }
 
     public void executeSimpleAsyncTask(View view) {
+        mSimpleAsyncTask = new MySimpleAsyncTask();
         mSimpleAsyncTask.execute();
     }
 
     public void cancelSimpleAsyncTask(View view) {
-        mSimpleAsyncTask.cancel(true);
+        mSimpleAsyncTask.cancel(false);
     }
 
-    SimpleAsyncTask mSimpleAsyncTask = new SimpleAsyncTask() {
+    private static class MySimpleAsyncTask extends SimpleAsyncTask {
 
         @Override
         protected void onPreExecute() {
@@ -45,10 +47,10 @@ public class FutureActivity extends AppCompatActivity {
         @Override
         protected String doInBackground() {
 
+            Log.i(TAG, "doInBackground");
             for (int i = 0; i < 30000; i++) {
                 publishProgress("progress" + i);
             }
-            Log.i(TAG, "doInBackground");
             return "finish";
         }
 
