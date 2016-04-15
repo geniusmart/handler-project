@@ -10,13 +10,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public abstract class SimpleAsyncTask {
+public abstract class SimpleAsyncTask<Params, Progress, Result> {
 
     private static final String TAG = "SimpleAsyncTask";
     private static final Executor EXECUTOR = Executors.newCachedThreadPool();
 
-    private Callable<String> mCallable;
-    private FutureTask<String> mFuture;
+    private WorkerRunnable<Params,Result> mWorker;
+    private FutureTask<Result> mFuture;
     private static Handler sHandler;
 
     private static final int MESSAGE_POST_RESULT = 0x1;
@@ -28,23 +28,23 @@ public abstract class SimpleAsyncTask {
     private final AtomicBoolean mCancelled = new AtomicBoolean();
 
     public SimpleAsyncTask() {
-        mCallable = new Callable<String>() {
+        mWorker = new WorkerRunnable<Params,Result>() {
             @Override
-            public String call() throws Exception {
+            public Result call() throws Exception {
                 //有可能正常执行，也有可能执行一半被cancel
-                String result = doInBackground();
+                Result result = doInBackground();
                 return postResult(result);
             }
         };
 
-        mFuture = new FutureTask<>(mCallable);
+        mFuture = new FutureTask<Result>(mWorker);
 
         //为了与主线程通讯，需持有主线程的mainLooper
         //注：源代码里Handler为懒汉式单例，且线程同步
         sHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                String result = (String) msg.obj;
+                Result result = (Result) msg.obj;
                 switch (msg.what) {
                     case MESSAGE_POST_PROGRESS:
                         //TODO 注：源码中区分了AsyncTask对象
@@ -63,13 +63,13 @@ public abstract class SimpleAsyncTask {
         EXECUTOR.execute(mFuture);
     }
 
-    protected final void publishProgress(String value) {
+    protected final void publishProgress(Progress value) {
         if (!isCancelled()) {
             sHandler.obtainMessage(MESSAGE_POST_PROGRESS, value).sendToTarget();
         }
     }
 
-    private String postResult(String result) {
+    private Result postResult(Result result) {
         Message message = sHandler.obtainMessage(MESSAGE_POST_RESULT, result);
         message.sendToTarget();
         return result;
@@ -87,7 +87,7 @@ public abstract class SimpleAsyncTask {
         return mFuture.cancel(mayInterruptIfRunning);
     }
 
-    private void finish(String result) {
+    private void finish(Result result) {
         if (isCancelled()) {
             onCancelled();
         } else {
@@ -95,15 +95,15 @@ public abstract class SimpleAsyncTask {
         }
     }
 
-    protected abstract String doInBackground();
+    protected abstract Result doInBackground();
 
     protected void onPreExecute() {
     }
 
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(Result result) {
     }
 
-    protected void onProgressUpdate(String value) {
+    protected void onProgressUpdate(Result value) {
     }
 
     protected void onCancelled() {
@@ -111,5 +111,9 @@ public abstract class SimpleAsyncTask {
 
     public final boolean isCancelled() {
         return mCancelled.get();
+    }
+
+    private static abstract class WorkerRunnable<Params, Result> implements Callable<Result> {
+        Params[] mParams;
     }
 }
