@@ -12,15 +12,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class SimpleAsyncTask<Params, Progress, Result> {
 
-    private static final String TAG = "SimpleAsyncTask";
     private static final Executor EXECUTOR = Executors.newCachedThreadPool();
 
-    private WorkerRunnable<Params,Result> mWorker;
+    private WorkerRunnable<Params, Result> mWorker;
     private FutureTask<Result> mFuture;
-    private static Handler sHandler;
 
     private static final int MESSAGE_POST_RESULT = 0x1;
     private static final int MESSAGE_POST_PROGRESS = 0x2;
+
+    private static InternalHandler sHandler = new InternalHandler();
 
     /**
      * 是否取消
@@ -28,49 +28,33 @@ public abstract class SimpleAsyncTask<Params, Progress, Result> {
     private final AtomicBoolean mCancelled = new AtomicBoolean();
 
     public SimpleAsyncTask() {
-        mWorker = new WorkerRunnable<Params,Result>() {
+        mWorker = new WorkerRunnable<Params, Result>() {
             @Override
             public Result call() throws Exception {
-                //有可能正常执行，也有可能执行一半被cancel
-                Result result = doInBackground();
+                Result result = doInBackground(mParams);
                 return postResult(result);
             }
         };
 
-        mFuture = new FutureTask<Result>(mWorker);
-
-        //为了与主线程通讯，需持有主线程的mainLooper
-        //注：源代码里Handler为懒汉式单例，且线程同步
-        sHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                Result result = (Result) msg.obj;
-                switch (msg.what) {
-                    case MESSAGE_POST_PROGRESS:
-                        //TODO 注：源码中区分了AsyncTask对象
-                        onProgressUpdate(result);
-                        break;
-                    case MESSAGE_POST_RESULT:
-                        finish(result);
-                        break;
-                }
-            }
-        };
+        mFuture = new FutureTask<>(mWorker);
     }
 
-    public void execute() {
+    public void execute(Params params) {
+        mWorker.mParams = params;
         onPreExecute();
         EXECUTOR.execute(mFuture);
     }
 
-    protected final void publishProgress(Progress value) {
+    protected final void publishProgress(Progress progress) {
         if (!isCancelled()) {
-            sHandler.obtainMessage(MESSAGE_POST_PROGRESS, value).sendToTarget();
+            AsyncTaskResult<Progress> taskResult = new AsyncTaskResult<>(this, progress);
+            sHandler.obtainMessage(MESSAGE_POST_PROGRESS, taskResult).sendToTarget();
         }
     }
 
     private Result postResult(Result result) {
-        Message message = sHandler.obtainMessage(MESSAGE_POST_RESULT, result);
+        AsyncTaskResult<Result> taskResult = new AsyncTaskResult<>(this, result);
+        Message message = sHandler.obtainMessage(MESSAGE_POST_RESULT, taskResult);
         message.sendToTarget();
         return result;
     }
@@ -79,8 +63,6 @@ public abstract class SimpleAsyncTask<Params, Progress, Result> {
     /**
      * 取消任务
      * 此方法不让重写，因此定义为final方法
-     *
-     * @param mayInterruptIfRunning TODO:参数作用何在？
      */
     public final boolean cancel(boolean mayInterruptIfRunning) {
         mCancelled.set(true);
@@ -95,17 +77,29 @@ public abstract class SimpleAsyncTask<Params, Progress, Result> {
         }
     }
 
-    protected abstract Result doInBackground();
-
     protected void onPreExecute() {
     }
 
+    /**
+     * 此方法应该在线程体中调用，即在FutureTask中调用
+     */
+    protected abstract Result doInBackground(Params params);
+
+    /**
+     * 此方法应该在Handler中调用
+     */
+    protected void onProgressUpdate(Progress progress) {
+    }
+
+    /**
+     * 此方法应该在Handler中调用
+     */
     protected void onPostExecute(Result result) {
     }
 
-    protected void onProgressUpdate(Result value) {
-    }
-
+    /**
+     * 此方法应该在Handler中调用
+     */
     protected void onCancelled() {
     }
 
@@ -114,6 +108,35 @@ public abstract class SimpleAsyncTask<Params, Progress, Result> {
     }
 
     private static abstract class WorkerRunnable<Params, Result> implements Callable<Result> {
-        Params[] mParams;
+        Params mParams;
+    }
+
+    private static class InternalHandler extends Handler {
+        public InternalHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            AsyncTaskResult<?> result = (AsyncTaskResult<?>) msg.obj;
+            switch (msg.what) {
+                case MESSAGE_POST_RESULT:
+                    result.mTask.finish(result.mData);
+                    break;
+                case MESSAGE_POST_PROGRESS:
+                    result.mTask.onProgressUpdate(result.mData);
+                    break;
+            }
+        }
+    }
+
+    private static class AsyncTaskResult<Data> {
+        final SimpleAsyncTask mTask;
+        final Data mData;
+
+        AsyncTaskResult(SimpleAsyncTask task, Data data) {
+            mTask = task;
+            mData = data;
+        }
     }
 }

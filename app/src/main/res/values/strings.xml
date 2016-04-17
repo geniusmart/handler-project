@@ -4,17 +4,17 @@
     <string name="cto_job">日理万机的CTO</string>
     <string name="title_activity_async_task">AsyncTaskActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_event">EventActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="handler_looper">Handler和Looper</string>
     <string name="handler_thread">HandlerThread</string>
     <string name="ui_handler_thread">UI线程和HandlerThread通讯</string>
-    <string name="asynctask">AsyncTask</string>
-    <string name="futuretask">FutureTask</string>
-    <string name="future_execute">execute</string>
-    <string name="future_cancle">cancle</string>
+    <string name="asynctask_title">AsyncTask</string>
+    <string name="future_title">FutureTask</string>
+    <string name="future_execute">FutureTask-execute</string>
+    <string name="future_execute_for_result">FutureTask-executeForResult</string>
+    <string name="future_cancle">FutureTask-cancle</string>
     <string name="future_simple_asynctask_execute">SimpleAsyncTask-execute</string>
     <string name="future_simple_asynctask_cancel">SimpleAsyncTask-cancel</string>
+    <string name="future_api_callable">Future And Callable</string>
 </resources>
