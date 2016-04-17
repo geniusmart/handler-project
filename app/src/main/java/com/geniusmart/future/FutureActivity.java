@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.geniusmart.R;
 
@@ -12,11 +13,13 @@ public class FutureActivity extends AppCompatActivity {
     private static final String TAG = "FutureActivity";
     private FutureApi mFutureApi;
     private SimpleAsyncTask mSimpleAsyncTask;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_future);
+        mTextView = (TextView) findViewById(R.id.textView);
         mFutureApi = new FutureApi();
     }
 
@@ -36,6 +39,12 @@ public class FutureActivity extends AppCompatActivity {
 
     public void executeSimpleAsyncTask(View view) {
         mSimpleAsyncTask = new MySimpleAsyncTask();
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSimpleAsyncTask.execute("task1");
+            }
+        }).start();*/
         mSimpleAsyncTask.execute("task1");
     }
 
@@ -49,12 +58,11 @@ public class FutureActivity extends AppCompatActivity {
         mFutureApi.executeFutureAndCallable();
     }
 
-    private static class MySimpleAsyncTask extends SimpleAsyncTask<String, String, String> {
+    private class MySimpleAsyncTask extends SimpleAsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
             Log.i(TAG, "onPreExecute");
-            super.onPreExecute();
         }
 
         @Override
@@ -73,19 +81,20 @@ public class FutureActivity extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
+            mTextView.setText("onCancelled");
             Log.i(TAG, "onCancelled");
         }
 
         @Override
         protected void onProgressUpdate(String value) {
+            mTextView.setText("onProgressUpdate--" + value);
             Log.i(TAG, "onProgressUpdate--" + value);
         }
 
         @Override
         protected void onPostExecute(String result) {
+            mTextView.setText("onPostExecute-" + result);
             Log.i(TAG, "onPostExecute-" + result);
         }
     }
-
-    ;
 }
