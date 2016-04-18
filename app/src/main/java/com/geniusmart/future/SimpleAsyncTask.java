@@ -47,7 +47,7 @@ public abstract class SimpleAsyncTask<Params, Progress, Result> {
 
     public void execute(Params params) {
         mWorker.mParams = params;
-        //TODO：在线程启动前调用预执行的模板方法，意味着它在调用AsyncTask.execute()的所在线程里执行，如果是在子线程中，则无法处理UI
+        //在线程启动前调用预执行的模板方法，意味着它在调用AsyncTask.execute()的所在线程里执行，如果是在子线程中，则无法处理UI
         //调用模板方法1-预执行
         onPreExecute();
         //执行FutureTask启动线程

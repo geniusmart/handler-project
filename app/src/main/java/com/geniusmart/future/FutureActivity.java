@@ -38,13 +38,16 @@ public class FutureActivity extends AppCompatActivity {
     }
 
     public void executeSimpleAsyncTask(View view) {
-        mSimpleAsyncTask = new MySimpleAsyncTask();
-        /*new Thread(new Runnable() {
+
+        /*//在子线程中创建和执行AsyncTask
+        new Thread(new Runnable() {
             @Override
             public void run() {
+                mSimpleAsyncTask = new MySimpleAsyncTask();
                 mSimpleAsyncTask.execute("task1");
             }
         }).start();*/
+        mSimpleAsyncTask = new MySimpleAsyncTask();
         mSimpleAsyncTask.execute("task1");
     }
 
